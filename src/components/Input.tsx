@@ -11,7 +11,11 @@ export default function Input({className, label, ...props}: InputProps) {
 
   return (
     <div>
-      {label ? <label htmlFor={id}>{label}</label> : null}
+      {label ? (
+        <label className="mb-4 ml-2 text-lg text-black/50" htmlFor={id}>
+          {label}
+        </label>
+      ) : null}
       <input
         className={clsx(
           "w-full rounded-3xl border-2 border-solid border-gray-200 px-6 py-2 text-lg",
