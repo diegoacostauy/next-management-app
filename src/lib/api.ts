@@ -4,7 +4,7 @@ type FetcherType = {
   url: string;
   method: Verbs;
   body: {};
-  json: boolean;
+  json?: boolean;
 };
 
 const fetcher = async ({
@@ -33,20 +33,18 @@ const fetcher = async ({
   }
 };
 
-export const register = async (user) => {
+export const register = async (user: Partial<User>) => {
   return fetcher({
     url: "/api/register",
     method: "POST",
     body: user,
-    json: false,
   });
 };
 
-export const signin = async (user) => {
+export const signin = async (user: Partial<User>) => {
   return fetcher({
     url: "/api/signin",
     method: "POST",
     body: user,
-    json: false,
   });
 };

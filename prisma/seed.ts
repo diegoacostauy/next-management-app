@@ -1,11 +1,16 @@
 import {TASK_STATUS} from "@prisma/client";
 
 import {db} from "@/lib/db";
+import {hashPassword} from "@/lib/auth";
 
 // import {hashPassword} from "@/lib/auth";
 
 const getRandomTaskStatus = () => {
-  const statuses = [TASK_STATUS.COMPLETED, TASK_STATUS.NOT_STARTED, TASK_STATUS.STARTED];
+  const statuses = [
+    TASK_STATUS.COMPLETED,
+    TASK_STATUS.NOT_STARTED,
+    TASK_STATUS.STARTED,
+  ];
 
   return statuses[Math.floor(Math.random() * statuses.length)];
 };
@@ -18,7 +23,7 @@ async function main() {
       email: "user@email.com",
       firstName: "User",
       lastName: "Person",
-      password: "password",
+      password: await hashPassword("password"),
       projects: {
         create: new Array(5).fill(1).map((_, i) => ({
           name: `Project ${i}`,
