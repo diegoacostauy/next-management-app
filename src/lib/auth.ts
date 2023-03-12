@@ -1,5 +1,8 @@
 import bcrypt from "bcrypt";
 import {SignJWT, jwtVerify} from "jose";
+import {NextApiRequestCookies} from "next/dist/server/api-utils";
+import {ReadonlyRequestCookies} from "next/dist/server/app-render";
+import {RequestCookies} from "next/dist/server/web/spec-extension/cookies";
 
 import {db} from "./db";
 
@@ -32,8 +35,13 @@ export const validateJWT = async (jwt: string) => {
   return payload.payload as Partial<User>;
 };
 
-export const getUserFromCookie = async (cookies) => {
-  const jwt = cookies.get(process.env.COOKIE_NAME);
+export const getUserFromCookie = async (
+  cookies: RequestCookies | ReadonlyRequestCookies,
+) => {
+  const jwt = cookies.get(process.env.COOKIE_NAME as string);
+
+  if (!jwt) return;
+
   const {id} = await validateJWT(jwt.value);
   const user = await db.user.findUnique({
     where: {

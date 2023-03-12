@@ -1,12 +1,64 @@
-import Button from "@/components/Button";
-import Input from "@/components/Input";
+import {cookies} from "next/headers";
+import Link from "next/link";
+import {Suspense} from "react";
 
-export default function Home() {
+import {db} from "@/lib/db";
+import {getUserFromCookie} from "@/lib/auth";
+import {delay} from "@/lib/async";
+import Greetings from "@/components/Greetings";
+import GreetingsSkeleton from "@/components/GreetinsSkeleton";
+import ProjectCard from "@/components/ProjectCard";
+import TasksCard from "@/components/TaskCard";
+import NewProject from "@/components/NewProject";
+
+const getData = async () => {
+  await delay(2000);
+  const user = await getUserFromCookie(cookies());
+  const projects = await db.project.findMany({
+    where: {
+      ownerId: user?.id,
+    },
+    include: {
+      tasks: true,
+    },
+  });
+
+  return {projects};
+};
+
+export default async function Page() {
+  const {projects} = await getData();
+
   return (
-    <div>
-      Home
-      <Button type="submit">Sarasa</Button>
-      <Input label="sarasa" />
+    <div className="h-full w-full overflow-y-auto pl-6">
+      <div className=" h-full  min-h-[content] items-stretch justify-center">
+        <div className="flex flex-1 grow">
+          <Suspense fallback={<GreetingsSkeleton />}>
+            <Greetings />
+          </Suspense>
+        </div>
+        <div className="flex-2 -m-3 mt-3 flex grow flex-wrap items-center ">
+          {projects.map((project) => (
+            <div key={project.id} className="w-1/3 p-3">
+              <Link href={`/project/${project.id}`}>
+                <ProjectCard project={project} />
+              </Link>
+            </div>
+          ))}
+          <div className="w-1/3 p-3">
+            <NewProject />
+          </div>
+        </div>
+        <div className="flex-2 mt-6 flex w-full grow">
+          <div className="w-full">
+            <div className="flex-2 mt-6 flex w-full grow">
+              <div className="w-full">
+                <TasksCard />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

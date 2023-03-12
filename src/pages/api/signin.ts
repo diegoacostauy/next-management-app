@@ -18,7 +18,12 @@ export default async function signin(
 
     if (!user) {
       res.status(401);
-      res.json({error: "Invalid Login"});
+      res.json({
+        error: {
+          code: "401",
+          message: "Invalid Login",
+        },
+      });
 
       return;
     }
@@ -37,13 +42,23 @@ export default async function signin(
         }),
       );
       res.status(201);
-      res.end();
+      res.json({message: "User logged in succesfully"});
     } else {
       res.status(401);
-      res.json({error: "Invalid Login"});
+      res.json({
+        error: {
+          code: "401",
+          message: "Invalid Login",
+        },
+      });
     }
   } else {
-    res.status(402);
-    res.end();
+    res.status(401);
+    res.json({
+      error: {
+        code: "401",
+        message: "Unauthorized",
+      },
+    });
   }
 }

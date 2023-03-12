@@ -20,10 +20,10 @@ async function main() {
     where: {email: "user@email.com"},
     update: {},
     create: {
-      email: "user@email.com",
-      firstName: "User",
-      lastName: "Person",
-      password: await hashPassword("password"),
+      email: "diegoacosta211@gmail.com",
+      firstName: "Diego",
+      lastName: "Acosta",
+      password: await hashPassword("123456"),
       projects: {
         create: new Array(5).fill(1).map((_, i) => ({
           name: `Project ${i}`,

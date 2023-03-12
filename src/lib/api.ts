@@ -23,7 +23,10 @@ const fetcher = async ({
   });
 
   if (!res.ok) {
-    throw new Error("API Error");
+    const data: ApiErrorResponse = await res.json();
+
+    console.log(data);
+    throw new Error(data.error.message);
   }
 
   if (json) {
@@ -46,5 +49,14 @@ export const signin = async (user: Partial<User>) => {
     url: "/api/signin",
     method: "POST",
     body: user,
+  });
+};
+
+export const createProject = async (name: string) => {
+  return fetcher({
+    url: "/api/project",
+    method: "POST",
+    body: {name},
+    json: true,
   });
 };

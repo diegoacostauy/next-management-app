@@ -13,6 +13,15 @@ type SidebarLinkType = {
 
 type TASK_STATUS = "NOT_STARTED" | "STARTED" | "COMPLETED";
 
+type ApiError = {
+  code: string;
+  message: string;
+};
+
+type ApiErrorResponse = {
+  error: ApiError;
+};
+
 type Project = {
   id: string;
   createdAt: Date;

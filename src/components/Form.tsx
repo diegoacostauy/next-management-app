@@ -95,7 +95,9 @@ export default function AuthForm({mode}: {mode: "register" | "signin"}) {
         }
         router.replace("/home");
       } catch (e) {
-        setError(`Count not ${mode}`);
+        if (e instanceof Error) {
+          setError(`${e.message}`);
+        }
       }
     },
     [firstName, lastName, email, password, mode, router],
@@ -111,6 +113,7 @@ export default function AuthForm({mode}: {mode: "register" | "signin"}) {
           <p className="text-lg text-black/25">{content.subheader}</p>
         </div>
         <form action="" className="w-full py-10" onSubmit={handleSubmit}>
+          {error && error}
           {mode == "register" && (
             <div className="mb-8 flex justify-between">
               <div className="pr-2">
