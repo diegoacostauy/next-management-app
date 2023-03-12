@@ -1,6 +1,7 @@
 import {cookies} from "next/headers";
 import Link from "next/link";
 import {Suspense} from "react";
+import {Project} from "@prisma/client";
 
 import {db} from "@/lib/db";
 import {getUserFromCookie} from "@/lib/auth";
@@ -37,8 +38,8 @@ export default async function Page() {
             <Greetings />
           </Suspense>
         </div>
-        <div className="flex-2 -m-3 mt-3 flex grow flex-wrap items-center ">
-          {projects.map((project) => (
+        <div className="-m-3 mt-3 flex grow flex-wrap items-center ">
+          {projects.map((project: Project) => (
             <div key={project.id} className="w-1/3 p-3">
               <Link href={`/project/${project.id}`}>
                 <ProjectCard project={project} />
@@ -49,9 +50,9 @@ export default async function Page() {
             <NewProject />
           </div>
         </div>
-        <div className="flex-2 mt-6 flex w-full grow">
+        <div className="mt-6 flex w-full grow">
           <div className="w-full">
-            <div className="flex-2 mt-6 flex w-full grow">
+            <div className="mt-6 flex w-full grow">
               <div className="w-full">
                 <TasksCard />
               </div>
